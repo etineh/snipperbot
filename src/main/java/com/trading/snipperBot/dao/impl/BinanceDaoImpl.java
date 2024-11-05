@@ -72,7 +72,7 @@ public class BinanceDaoImpl implements BinanceDoa {
     public void startTrade() {
 
         String buyOrSell = k.SELL;
-        String baseSymbol = "FIL";
+        String baseSymbol = "BTC";
         String quoteSymbol = k.USDT;
         String quoteAmount = k.tokenBalancesMap.get(quoteSymbol); // the amount you want to buy with 'e.g' 100usdt
 //        String quoteAmount = "100"; // the amount you want to buy with 'e.g' 100usdt
