@@ -72,7 +72,7 @@ public class BinanceDaoImpl implements BinanceDoa {
     public void startTrade() {
 
         String buyOrSell = k.SELL;
-        String baseSymbol = "BTC";
+        String baseSymbol = "FIL";
         String quoteSymbol = k.USDT;
         String quoteAmount = k.tokenBalancesMap.get(quoteSymbol); // the amount you want to buy with 'e.g' 100usdt
 //        String quoteAmount = "100"; // the amount you want to buy with 'e.g' 100usdt
@@ -84,7 +84,7 @@ public class BinanceDaoImpl implements BinanceDoa {
         Map<String, String> paramMap = TradeMapUtils.paramMap(buyOrSell, marketOrLimit, baseSymbol, quoteSymbol,
                 quoteAmount, limitOrderPrice);
 
-        prepareTradeParam(paramMap, buyOrSell, "LIT", "BTC", k.USDT, 1);
+        prepareTradeParam(paramMap, buyOrSell, "FIL", "BTC  ", k.USDT, 3);
 
     }
 

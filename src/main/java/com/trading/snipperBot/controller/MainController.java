@@ -17,6 +17,11 @@ public class MainController {
         this.binanceService = binanceService;
     }
 
+    @GetMapping("/")
+    public String helloWorld() {
+        return "Hello World!";
+    }
+
     @GetMapping("/test")
     private String test(){
         return "it is working..";

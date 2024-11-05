@@ -20,7 +20,7 @@ public class SnipperBotApplication {
 		SpringApplication.run(SnipperBotApplication.class, args);
 
 		try {
-			BinanceUtils.checkOnePairBalance("ton");
+			BinanceUtils.checkOnePairBalance("usdt");
 
 			BinanceUtils.loadSymbolDecimals();
 			BinanceUtils.saveAllPairLatestBalanceToMap();
