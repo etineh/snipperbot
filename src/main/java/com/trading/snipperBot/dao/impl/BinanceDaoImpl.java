@@ -71,20 +71,23 @@ public class BinanceDaoImpl implements BinanceDoa {
     @Override
     public void startTrade() {
 
-        String buyOrSell = k.SELL;
-        String baseSymbol = "BTC";
-        String quoteSymbol = k.USDT;
-        String quoteAmount = k.tokenBalancesMap.get(quoteSymbol); // the amount you want to buy with 'e.g' 100usdt
-//        String quoteAmount = "100"; // the amount you want to buy with 'e.g' 100usdt
-        String limitOrderPrice = "0";
-        String marketOrLimit = k.MARKET;
 
-//        prepareTradeParam (buyOrSell, marketOrLimit, baseSymbol, quoteSymbol, quoteAmount, limitOrderPrice, true);
+        for (String baseSymbol : k.tokenBalancesMap.keySet())// loop throught each key which is the symbol and set it as the baseSymbol
+        {
+            String buyOrSell = k.SELL;
+//            String baseSymbol = balSymbol;
+            String quoteSymbol = k.USDT;
+//        String quoteAmount = k.tokenBalancesMap.get(quoteSymbol); // the amount you want to buy with 'e.g' 100usdt
+            String quoteAmount = "100"; // the amount you want to buy with 'e.g' 100usdt
+            String limitOrderPrice = "0";
+            String marketOrLimit = k.MARKET;
 
-        Map<String, String> paramMap = TradeMapUtils.paramMap(buyOrSell, marketOrLimit, baseSymbol, quoteSymbol,
-                quoteAmount, limitOrderPrice);
+            Map<String, String> paramMap = TradeMapUtils.paramMap(buyOrSell, marketOrLimit, baseSymbol, quoteSymbol,
+                    quoteAmount, limitOrderPrice);
 
-        prepareTradeParam(paramMap, buyOrSell, "FIL", "BTC  ", k.USDT, 3);
+            prepareTradeParam(paramMap, k.BUY, "OGN", "BTC", k.USDT, 3);
+
+        }
 
     }
 
@@ -175,7 +178,8 @@ public class BinanceDaoImpl implements BinanceDoa {
                     System.out.println("Fill price: " + fill.price());
                 }
                 System.out.println("cummulativeQuoteQty: " + responseModel.cummulativeQuoteQty());
-                System.out.println("currect price: " + BinanceUtils.getLatestData(createTradeMap.get("symbol")).getLastPrice());
+                System.out.println("currect price: " + BinanceUtils.getLatestData(createTradeMap.get("symbol"))
+                        .getLastPrice() + " ============ ============ ============");
 
                 String newBalance = BinanceUtils.checkOnePairBalance(createTradeMap.get("symbolUpdate"));
                 if(newBalance != null) {
@@ -190,7 +194,6 @@ public class BinanceDaoImpl implements BinanceDoa {
 
 //                    String type = round == 3 ? k.LIMIT : k.MARKET;
                     String type = k.MARKET;
-                    if(round == 3) System.out.println("I enter last trade by limit: " + type +" @: " + createTradeMap.get("limitPrice"));
 
                     // call the next trade
                     if(nextTrade.equals(k.BUY)) {
@@ -211,9 +214,8 @@ public class BinanceDaoImpl implements BinanceDoa {
 
             }
 
-
         } catch (BinanceClientException e) {
-            System.err.println("Error on trade: " + e.getMessage());
+            System.err.println("Error on trade: " + e.getMessage() + ": The details are: " + parameters);
         }
 
     }
@@ -241,9 +243,9 @@ public class BinanceDaoImpl implements BinanceDoa {
 
                 // Check for BTC, BNB, and ETH pair opportunities
                 if (isConnected){
-                    if (checkForBtcPairOpportunities(event, pairToBtcMap)) break;
-                    if (checkForBnbPairOpportunities(event, pairToBnbMap)) break;
-                    if (checkForEthPairOpportunities(event, pairToEthMap)) break;
+//                    if (checkForBtcPairOpportunities(event, pairToBtcMap)) break;
+//                    if (checkForBnbPairOpportunities(event, pairToBnbMap)) break;
+//                    if (checkForEthPairOpportunities(event, pairToEthMap)) break;
                 }
             }
 
@@ -311,7 +313,7 @@ public class BinanceDaoImpl implements BinanceDoa {
                 double pairToUsdtPrice = Double.parseDouble(event.getLastPrice());
                 double pairToBtcPrice = Double.parseDouble(pairToBtcEvent.getLastPrice());
 
-                System.out.println("number of trade pairToBtc: " + pairToBtcEvent.getNumberOfTrades());
+                System.out.println("number of trade pairToBtc: " + pairToBtcEvent.getNumberOfTrades() + " ============");
 
                 if ( checkForArbitrageOpportunity(k.BTCUSDT, symbol, pairToBtcSymbol,   // symbol = pairToUsdt
                         btcUsdtPrice, pairToUsdtPrice, pairToBtcPrice, -500, 500) )
@@ -383,10 +385,11 @@ public class BinanceDaoImpl implements BinanceDoa {
         {
             System.out.println(potentialProfit +": Arbitrage Opportunity Found! Profit: " + potentialProfit/1000.00 + "%");
 
-            String altPair = pairToUSDT.split(k.USDT)[0];
-            String headPair = headUsdt.split(k.USDT)[0];
+            String stableCoin = k.USDT;    // change Later to USDC, USDT, TRY
+            String altPair = pairToUSDT.split(stableCoin)[0];
+            String headPair = headUsdt.split(stableCoin)[0];
 
-            Map<String, String> paramMap = TradeMapUtils.paramMap(k.BUY, k.MARKET, altPair, k.USDT,
+            Map<String, String> paramMap = TradeMapUtils.paramMap(k.BUY, k.MARKET, altPair, stableCoin,
                     "100", String.valueOf(headUsdtPrice));
 
             // Prepare the trade details for user output
@@ -399,6 +402,10 @@ public class BinanceDaoImpl implements BinanceDoa {
             // Check if realistProfit is at least 3 times greater than slippagePercentage
             if (realistProfitBigDecimal.compareTo(slippagePercentage.multiply(BigDecimal.valueOf(3))) > 0)
             {
+                // first sell off the pairToUsdt
+//                Map<String, String> paramMapClear = TradeMapUtils.paramMap(k.SELL, k.MARKET, altPair, stableCoin,
+//                        null, null);
+//                prepareTradeParam(paramMapClear, k.BUY, "OGN", "BTC", k.USDT, 3);
 
                 if (potentialProfit > 0) {  // it is positive profit, so buy the pair first, nextTrade should be SELL
                     System.out.println(k.profitOverSlippagePositiveMsg(pairToUSDT));

@@ -210,7 +210,7 @@ public class BinanceUtils {
         BigDecimal tradingFee = BigDecimal.valueOf(0.1); // 0.1%
         slippage = slippage.add(tradingFee);
 
-        System.out.println("Slippage with trading fee: (" + symbol + ") : " + slippage + "% ============");
+        System.out.println("Slippage with trading fee: (" + symbol + ") : " + slippage + " %");
         return slippage; // This will give you the slippage percentage including the fee
     }
 
