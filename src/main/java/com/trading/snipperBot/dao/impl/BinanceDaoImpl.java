@@ -72,22 +72,21 @@ public class BinanceDaoImpl implements BinanceDoa {
     public void startTrade() {
 
 
-        for (String baseSymbol : k.tokenBalancesMap.keySet())// loop throught each key which is the symbol and set it as the baseSymbol
-        {
-            String buyOrSell = k.SELL;
-//            String baseSymbol = balSymbol;
-            String quoteSymbol = k.USDT;
+        String buyOrSell = k.SELL;
+        String baseSymbol = "BTC";
+        String quoteSymbol = k.USDT;
 //        String quoteAmount = k.tokenBalancesMap.get(quoteSymbol); // the amount you want to buy with 'e.g' 100usdt
-            String quoteAmount = "100"; // the amount you want to buy with 'e.g' 100usdt
-            String limitOrderPrice = "0";
-            String marketOrLimit = k.MARKET;
+        String quoteAmount = "100"; // the amount you want to buy with 'e.g' 100usdt
+        String limitOrderPrice = "0";
+        String marketOrLimit = k.MARKET;
 
-            Map<String, String> paramMap = TradeMapUtils.paramMap(buyOrSell, marketOrLimit, baseSymbol, quoteSymbol,
-                    quoteAmount, limitOrderPrice);
+        Map<String, String> paramMap = TradeMapUtils.paramMap(buyOrSell, marketOrLimit, baseSymbol, quoteSymbol,
+                quoteAmount, limitOrderPrice);
 
-            prepareTradeParam(paramMap, k.BUY, "OGN", "BTC", k.USDT, 3);
+        prepareTradeParam(paramMap, k.BUY, "OGN", "BTC", k.USDT, 3);
 
-        }
+//        for (String baseSymbol : k.tokenBalancesMap.keySet())// loop throught each key which is the symbol and set it as the baseSymbol
+//        {}
 
     }
 
@@ -214,8 +213,14 @@ public class BinanceDaoImpl implements BinanceDoa {
 
             }
 
-        } catch (BinanceClientException e) {
+        } catch (Exception e) {
             System.err.println("Error on trade: " + e.getMessage() + ": The details are: " + parameters);
+
+            Map<String, String> paramMap = TradeMapUtils.paramMap(k.SELL, k.MARKET, nextQuoteS, stableCoin,
+                    null, createTradeMap.get("limitPrice"));
+
+            prepareTradeParam(paramMap, k.SELL, nextQuoteS, stableCoin, null, 3);
+
         }
 
     }
@@ -243,9 +248,9 @@ public class BinanceDaoImpl implements BinanceDoa {
 
                 // Check for BTC, BNB, and ETH pair opportunities
                 if (isConnected){
-//                    if (checkForBtcPairOpportunities(event, pairToBtcMap)) break;
-//                    if (checkForBnbPairOpportunities(event, pairToBnbMap)) break;
-//                    if (checkForEthPairOpportunities(event, pairToEthMap)) break;
+                    if (checkForBtcPairOpportunities(event, pairToBtcMap)) break;
+                    if (checkForBnbPairOpportunities(event, pairToBnbMap)) break;
+                    if (checkForEthPairOpportunities(event, pairToEthMap)) break;
                 }
             }
 
@@ -381,54 +386,53 @@ public class BinanceDaoImpl implements BinanceDoa {
         BigDecimal realistProfitBigDecimal = BigDecimal.valueOf(Math.abs(potentialProfit / 1000.00));
         BigDecimal slippagePercentage = BinanceUtils.calculateSlippagePercentage(pairToHead);
 
-        if (potentialProfit <= minusTarget  || potentialProfit >= plusTarget)   // profit detected!
-        {
-            System.out.println(potentialProfit +": Arbitrage Opportunity Found! Profit: " + potentialProfit/1000.00 + "%");
+        if(pairToHead.equalsIgnoreCase("VETBTC") && potentialProfit/1000 > 2.2) {   // remove later
 
-            String stableCoin = k.USDT;    // change Later to USDC, USDT, TRY
-            String altPair = pairToUSDT.split(stableCoin)[0];
-            String headPair = headUsdt.split(stableCoin)[0];
-
-            Map<String, String> paramMap = TradeMapUtils.paramMap(k.BUY, k.MARKET, altPair, stableCoin,
-                    "100", String.valueOf(headUsdtPrice));
-
-            // Prepare the trade details for user output
-            Map<String, Double> pairDetailMap = TradeMapUtils.tradePairDetails(headUsdt, headUsdtPrice,
-                    pairToUSDT, pairToUSDTPrice, pairToHead, pairToHeadPrice);
-            OpportunityResultM resultM = new OpportunityResultM(
-                    slippagePercentage, potentialProfit / 1000.00, k.slippageOverProfitMsg, pairDetailMap
-            );
-
-            // Check if realistProfit is at least 3 times greater than slippagePercentage
-            if (realistProfitBigDecimal.compareTo(slippagePercentage.multiply(BigDecimal.valueOf(3))) > 0)
+            if (potentialProfit <= minusTarget  || potentialProfit >= plusTarget)   // profit detected!
             {
-                // first sell off the pairToUsdt
-//                Map<String, String> paramMapClear = TradeMapUtils.paramMap(k.SELL, k.MARKET, altPair, stableCoin,
-//                        null, null);
-//                prepareTradeParam(paramMapClear, k.BUY, "OGN", "BTC", k.USDT, 3);
+                System.out.println(potentialProfit +": Arbitrage Opportunity Found! Profit: " + potentialProfit/1000.00 + "%");
 
-                if (potentialProfit > 0) {  // it is positive profit, so buy the pair first, nextTrade should be SELL
-                    System.out.println(k.profitOverSlippagePositiveMsg(pairToUSDT));
-                    resultM.updateMessage(k.profitOverSlippagePositiveMsg(pairToUSDT));
+                String stableCoin = k.USDT;    // change Later to USDC, USDT, TRY
+                String altPair = pairToUSDT.split(stableCoin)[0];
+                String headPair = headUsdt.split(stableCoin)[0];
 
-                    prepareTradeParam(paramMap, k.SELL, altPair, headPair, k.USDT, 1);
+                // prepare trade execution
+                Map<String, String> paramMap = TradeMapUtils.paramMap(k.BUY, k.MARKET, altPair, stableCoin,
+                        "100", String.valueOf(headUsdtPrice));
 
-                } else {    // it is negative profit, so buy the head first, nextTrade should be BUY 'e.g' LITBTC
-                    System.out.println(k.profitOverSlippageNegativeMsg(headUsdt));
-                    resultM.updateMessage(k.profitOverSlippagePositiveMsg(headUsdt));
+                // Prepare the trade details for user output
+                Map<String, Double> pairDetailMap = TradeMapUtils.tradePairDetails(headUsdt, headUsdtPrice,
+                        pairToUSDT, pairToUSDTPrice, pairToHead, pairToHeadPrice);
+                OpportunityResultM resultM = new OpportunityResultM(
+                        slippagePercentage, potentialProfit / 1000.00, k.slippageOverProfitMsg, pairDetailMap
+                );
 
-                    paramMap.put("baseSymbol", headPair);
-                    paramMap.put("limitOrderPrice", String.valueOf(pairToUSDTPrice));
+                // Check if realistProfit is at least 3 times greater than slippagePercentage
+//            if (realistProfitBigDecimal.compareTo(slippagePercentage.multiply(BigDecimal.valueOf(3))) > 0)
+//            {
+//                if (potentialProfit > 0) {  // it is positive profit, so buy the pair first, nextTrade should be SELL
+//                    System.out.println(k.profitOverSlippagePositiveMsg(pairToUSDT));
+//                    resultM.updateMessage(k.profitOverSlippagePositiveMsg(pairToUSDT));
+//
+//                    prepareTradeParam(paramMap, k.SELL, altPair, headPair, k.USDT, 1);
+//
+//                } else {    // it is negative profit, so buy the head first, nextTrade should be BUY 'e.g' LITBTC
+                System.out.println(k.profitOverSlippageNegativeMsg(headUsdt));
+                resultM.updateMessage(k.profitOverSlippagePositiveMsg(headUsdt));
 
-                    prepareTradeParam(paramMap, k.BUY, altPair, headPair, k.USDT,1);
+                paramMap.put("baseSymbol", headPair);
+                paramMap.put("limitOrderPrice", String.valueOf(pairToUSDTPrice));
 
-                }
-                return true;
+                prepareTradeParam(paramMap, k.BUY, altPair, headPair, k.USDT,1);
+
+//                }
+//                return true;
+//            }
+
+//            System.out.println(k.slippageOverProfitMsg);    // send to database and resultM
+
+                return true; // remove later
             }
-
-            System.out.println(k.slippageOverProfitMsg);    // send to database and resultM
-
-            return true; // remove later
         }
 
         System.out.println(potentialProfit + " No Profit: " + potentialProfit/1000.00 + "%");
