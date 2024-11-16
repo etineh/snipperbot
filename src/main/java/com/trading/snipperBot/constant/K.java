@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class k {
+public class K {
 
     public static String BTCUSDT = "BTCUSDT";
     public static String SOLUSDT = "SOLUSDT";
@@ -32,13 +32,13 @@ public class k {
     // Define a map to hold the latest state of each symbol
     public static final Map<String, LiveMarketModel> latestMarketData = new ConcurrentHashMap<>();
 
-    public static final String slippageOverProfitMsg = "Cannot enter trade: The slippage is higher than the realist profit.";
+    public static final String slippageOverProfitMsg = "Note: Cannot enter trade - The slippage is higher than the realist profit.";
 //    public static final String profitOverSlippageMinusMsg = "Cannot enter trade: The slippage is higher than the realist profit.";
     public static String profitOverSlippagePositiveMsg(String pairToUsdt) {
-        return "Profit on positive; so entering straight trade by: buying " + pairToUsdt + " first";
+        return "Note: Profit on positive - so entering straight trade by: buying " + pairToUsdt + " first";
     }
     public static String profitOverSlippageNegativeMsg(String headUsdt) {
-        return "Profit on negative; so reversing trade by: buying " + headUsdt + " first";
+        return "Note: Profit on negative - so reversing trade by: buying " + headUsdt + " first";
     }
 
 

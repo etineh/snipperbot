@@ -1,6 +1,7 @@
 package com.trading.snipperBot.service;
 
 import com.trading.snipperBot.dao.BinanceDoa;
+import com.trading.snipperBot.model.incoming.PlaceTradeM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ public class BinanceService implements BinanceDoa {
     }
 
     @Override
-    public void startTrade() {
-        binanceDoa.startTrade();
+    public void startTrade(PlaceTradeM placeTradeM) {
+        binanceDoa.startTrade(placeTradeM);
     }
 }

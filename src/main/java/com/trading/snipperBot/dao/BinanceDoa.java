@@ -1,5 +1,7 @@
 package com.trading.snipperBot.dao;
 
+import com.trading.snipperBot.model.incoming.PlaceTradeM;
+
 public interface BinanceDoa {
 
     void liveMarketData();
@@ -8,6 +10,6 @@ public interface BinanceDoa {
 
     void closeLiveMarketConnection();
 
-    void startTrade();
+    void startTrade(PlaceTradeM placeTradeM);
 
 }

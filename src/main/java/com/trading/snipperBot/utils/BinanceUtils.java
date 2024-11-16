@@ -2,8 +2,10 @@ package com.trading.snipperBot.utils;
 import com.binance.connector.client.SpotClient;
 import com.binance.connector.client.exceptions.BinanceClientException;
 import com.binance.connector.client.impl.SpotClientImpl;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.trading.snipperBot.model.LiveMarketModel;
-import com.trading.snipperBot.constant.k;
+import com.trading.snipperBot.constant.K;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -62,8 +64,12 @@ public class BinanceUtils {
                 String freeBalance = balanceObj.getString("free");
 
                 // Store the free balance in the map
-                k.tokenBalancesMap.put(asset, freeBalance);
+                K.tokenBalancesMap.put(asset, freeBalance);
             }
+
+            DatabaseReference walletBalancesRef = FirebaseDatabase.getInstance().getReference("walletBalances");
+
+            walletBalancesRef.setValueAsync(K.tokenBalancesMap);
 
         }).start();
 
@@ -145,7 +151,7 @@ public class BinanceUtils {
                     if (filter.getString("filterType").equals("LOT_SIZE")) {
                         BigDecimal stepSize = new BigDecimal(filter.getString("stepSize"));
                         int maxDecimals = stepSize.stripTrailingZeros().scale();
-                        k.symbolDecimalsMap.put(symbol, maxDecimals);
+                        K.symbolDecimalsMap.put(symbol, maxDecimals);
                         break;
                     }
                 }
@@ -157,7 +163,7 @@ public class BinanceUtils {
 
 
     public static String adjustToAllowedDecimals(String quantity, String symbol) {
-        int getMaxDecimal = k.symbolDecimalsMap.getOrDefault(symbol, 0); // return 0 if symbol not found
+        int getMaxDecimal = K.symbolDecimalsMap.getOrDefault(symbol, 0); // return 0 if symbol not found
         BigDecimal fullBalance = new BigDecimal(quantity);
         return fullBalance.setScale(getMaxDecimal, RoundingMode.DOWN).toPlainString();
     }
@@ -210,14 +216,14 @@ public class BinanceUtils {
         BigDecimal tradingFee = BigDecimal.valueOf(0.1); // 0.1%
         slippage = slippage.add(tradingFee);
 
-        System.out.println("Slippage with trading fee: (" + symbol + ") : " + slippage + " %");
+//        System.out.println("Slippage with trading fee: (" + symbol + ") : " + slippage + " %");
         return slippage; // This will give you the slippage percentage including the fee
     }
 
 
 
     public static LiveMarketModel getLatestData(String symbol) {
-        return k.latestMarketData.get(symbol);
+        return K.latestMarketData.get(symbol);
     }
 
     private void checkBalanceOnPostMan() {

@@ -1,13 +1,15 @@
 package com.trading.snipperBot.controller;
 
+import com.trading.snipperBot.model.incoming.PlaceTradeM;
 import com.trading.snipperBot.service.BinanceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/main")
+@RequestMapping("/api")
 public class MainController {
 
     BinanceService binanceService;
@@ -17,7 +19,7 @@ public class MainController {
         this.binanceService = binanceService;
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public String helloWorld() {
         return "Hello World!";
     }
@@ -31,17 +33,15 @@ public class MainController {
     public String live() {
         binanceService.liveMarketData();
 
-        return "Now printing live data";
+        return "I have started live market";
 
     }
 
     @GetMapping("/res")
-    public String restart() {
+    public void restart() {
         binanceService.restartLiveMarketData();
-
-        return "I have restart live data";
-
     }
+
 
     @GetMapping("/stop")
     public String stop() {
@@ -50,11 +50,10 @@ public class MainController {
         return "I have stop live data";
     }
 
-    @GetMapping("/trade")
-    public String startTrade() {
-        binanceService.startTrade();
-
-        return "I have start trade";
+    @PostMapping("/trade")
+    public void startTrade(@RequestBody PlaceTradeM placeTradeM) {
+        binanceService.startTrade(placeTradeM);
+//        return "I have start trade";
     }
 
 

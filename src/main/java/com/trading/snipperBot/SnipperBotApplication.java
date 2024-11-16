@@ -1,19 +1,16 @@
 package com.trading.snipperBot;
 
+import com.trading.snipperBot.dao.impl.BinanceDaoImpl;
 import com.trading.snipperBot.utils.BinanceUtils;
+import com.trading.snipperBot.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
+@ComponentScan({"config", "com.trading.snipperBot"})
 @SpringBootApplication
 public class SnipperBotApplication {
-
-	@Value("${binance.api.key}")
-	private static String apiKey;
-
-	@Value("${binance.secret.key}")
-	private static String secretKey;
-
 
 	public static void main(String[] args) {
 
@@ -29,10 +26,8 @@ public class SnipperBotApplication {
 			System.out.println("there is error: " + e.getMessage());
 		}
 
-
-//		BinanceUtils.tradeFee();
-
-//		System.out.println("The step : " + k.symbolDecimalsMap.get("HBARBTC"));
+//		BinanceDaoImpl binanceDao = new BinanceDaoImpl();
+//		binanceDao.liveMarketData();
 
 	}
 
