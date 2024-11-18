@@ -9,42 +9,76 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 
 @Component
 public class FirebaseInitializer {
 
-    @Value("${firebase.key.path}")
-    private String path;
+//    @Value("${firebase.key.path}")
+//    private String path;
 
-    @Value("${firebase.key.databaseUrl}")
-    private String databaseUrl;
+//    @Value("${firebase.key.databaseUrl}")
+//    private String databaseUrl;
 
     @PostConstruct
     public void initialize() {
         try {
-            FileInputStream serviceAccountStream = new FileInputStream(path);
+            // Read the Firebase key JSON from the environment variable
+            String firebaseKeyJson = System.getenv("FIREBASE_KEY_JSON");
+            String databaseUrl = System.getenv("FIREBASE_DATABASE_URL");
+
+            if (firebaseKeyJson == null || firebaseKeyJson.isEmpty()) {
+                throw new IllegalStateException("FIREBASE_KEY_JSON environment variable is not set or empty.");
+            }
+
+            // Load the credentials from the JSON content
+            GoogleCredentials credentials = GoogleCredentials.fromStream(
+                    new ByteArrayInputStream(firebaseKeyJson.getBytes())
+            );
 
             FirebaseOptions options = new FirebaseOptions.Builder()
-                    .setCredentials(GoogleCredentials.fromStream(serviceAccountStream))
+                    .setCredentials(credentials)
                     .setDatabaseUrl(databaseUrl)
                     .build();
 
-            if (FirebaseApp.getApps().isEmpty())
-            {
+            if (FirebaseApp.getApps().isEmpty()) {
                 FirebaseApp.initializeApp(options);
                 checkDatabaseConnection();
-
+                System.out.println("Firebase initialized successfully");
             } else {
-//                checkDatabaseConnection();
                 System.out.println("Firebase already initialized");
             }
-
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+//    @PostConstruct
+//    public void initialize() {
+//        try {
+//            FileInputStream serviceAccountStream = new FileInputStream(path);
+//
+//            FirebaseOptions options = new FirebaseOptions.Builder()
+//                    .setCredentials(GoogleCredentials.fromStream(serviceAccountStream))
+//                    .setDatabaseUrl(databaseUrl)
+//                    .build();
+//
+//            if (FirebaseApp.getApps().isEmpty())
+//            {
+//                FirebaseApp.initializeApp(options);
+//                checkDatabaseConnection();
+//
+//            } else {
+////                checkDatabaseConnection();
+//                System.out.println("Firebase already initialized");
+//            }
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     private static final String TEST_URL = "http://www.google.com";
 
