@@ -11,6 +11,7 @@ com/trading/snipperBot/SnipperBotApplication.class
 com/trading/snipperBot/constant/K.class
 config/FirebaseInitializer$1.class
 com/trading/snipperBot/dao/impl/BinanceDaoImpl.class
+com/trading/snipperBot/model/outgoing/TestM.class
 com/trading/snipperBot/utils/DateUtil.class
 com/trading/snipperBot/utils/BinanceConfig.class
 com/trading/snipperBot/model/outgoing/OpportunityResultM.class

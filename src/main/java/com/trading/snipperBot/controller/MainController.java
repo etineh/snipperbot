@@ -1,6 +1,7 @@
 package com.trading.snipperBot.controller;
 
 import com.trading.snipperBot.model.incoming.PlaceTradeM;
+import com.trading.snipperBot.model.outgoing.TestM;
 import com.trading.snipperBot.service.BinanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,10 +31,10 @@ public class MainController {
     }
 
     @GetMapping("/live")
-    public String live() {
+    public TestM live() {
         binanceService.liveMarketData();
 
-        return "I have started live market";
+        return new TestM("success", System.currentTimeMillis());
 
     }
 

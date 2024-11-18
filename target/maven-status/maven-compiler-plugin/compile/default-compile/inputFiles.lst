@@ -7,6 +7,7 @@
 /Users/mac/Downloads/bot/snipperBot/src/main/java/com/trading/snipperBot/model/OrderResponseModel.java
 /Users/mac/Downloads/bot/snipperBot/src/main/java/com/trading/snipperBot/model/incoming/PlaceTradeM.java
 /Users/mac/Downloads/bot/snipperBot/src/main/java/com/trading/snipperBot/model/outgoing/OpportunityResultM.java
+/Users/mac/Downloads/bot/snipperBot/src/main/java/com/trading/snipperBot/model/outgoing/TestM.java
 /Users/mac/Downloads/bot/snipperBot/src/main/java/com/trading/snipperBot/service/BinanceService.java
 /Users/mac/Downloads/bot/snipperBot/src/main/java/com/trading/snipperBot/utils/BinanceConfig.java
 /Users/mac/Downloads/bot/snipperBot/src/main/java/com/trading/snipperBot/utils/BinanceUtils.java
