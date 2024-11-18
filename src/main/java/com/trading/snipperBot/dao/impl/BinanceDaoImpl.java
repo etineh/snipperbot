@@ -22,6 +22,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -486,7 +487,9 @@ public class BinanceDaoImpl implements BinanceDoa {
 
     private void sendToDatabase(OpportunityResultM resultM, String path) {
 
-        String todayDateWithDay = String.valueOf(System.currentTimeMillis());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String todayDateWithDay = sdf.format(new Date());  // This will return the current date in the format "yyyy-MM-dd"
+
         String tradeTime = String.valueOf(System.currentTimeMillis());
 
         DatabaseReference tradeDetectRef = FirebaseDatabase.getInstance().getReference("tradeDetect");
