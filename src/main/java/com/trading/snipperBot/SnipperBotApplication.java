@@ -16,18 +16,15 @@ public class SnipperBotApplication {
 
 		SpringApplication.run(SnipperBotApplication.class, args);
 
-		String databaseUrl = System.getenv("FIREBASE_DATABASE_URL");
-
-		System.out.println("I have printed db url: " + databaseUrl);
-//		try {
+		try {
 //			BinanceUtils.checkOnePairBalance("btc");
-//
-//			BinanceUtils.loadSymbolDecimals();
-//			BinanceUtils.saveAllPairLatestBalanceToMap();
-//		} catch (Exception e) {
-//
-//			System.out.println("there is error: " + e.getMessage());
-//		}
+
+			BinanceUtils.loadSymbolDecimals();
+			BinanceUtils.saveAllPairLatestBalanceToMap();
+		} catch (Exception e) {
+
+			System.out.println("there is error: " + e.getMessage());
+		}
 
 //		BinanceDaoImpl binanceDao = new BinanceDaoImpl();
 //		binanceDao.liveMarketData();

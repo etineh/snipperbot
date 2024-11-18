@@ -22,42 +22,6 @@ public class FirebaseInitializer {
 //    @Value("${firebase.key.databaseUrl}")
 //    private String databaseUrl;
 
-//    @PostConstruct
-//    public void initialize() {
-//        try {
-//            // Read the Firebase key JSON from the environment variable
-//            String firebaseKeyJson = System.getenv("FIREBASE_KEY_JSON");
-//            String databaseUrl = System.getenv("FIREBASE_DATABASE_URL");
-//
-//            if (firebaseKeyJson == null || firebaseKeyJson.isEmpty()) {
-//                System.out.println("firebaseKey is null");
-//                throw new IllegalStateException("FIREBASE_KEY_JSON environment variable is not set or empty.");
-//            } else {
-//                System.out.println("firebaseKey is available");
-//            }
-//
-//            // Load the credentials from the JSON content
-//            GoogleCredentials credentials = GoogleCredentials.fromStream(
-//                    new ByteArrayInputStream(firebaseKeyJson.getBytes())
-//            );
-//
-//            FirebaseOptions options = new FirebaseOptions.Builder()
-//                    .setCredentials(credentials)
-//                    .setDatabaseUrl(databaseUrl)
-//                    .build();
-//
-//            if (FirebaseApp.getApps().isEmpty()) {
-//                FirebaseApp.initializeApp(options);
-//                checkDatabaseConnection();
-//                System.out.println("Firebase initialized successfully");
-//            } else {
-//                System.out.println("Firebase already initialized");
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
     @PostConstruct
     public void initialize() {
         try {
