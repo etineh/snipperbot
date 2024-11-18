@@ -486,7 +486,7 @@ public class BinanceDaoImpl implements BinanceDoa {
 
     private void sendToDatabase(OpportunityResultM resultM, String path) {
 
-        String todayDateWithDay = DateUtil.getTodayDateWithDay();
+        String todayDateWithDay = String.valueOf(System.currentTimeMillis());
         String tradeTime = String.valueOf(System.currentTimeMillis());
 
         DatabaseReference tradeDetectRef = FirebaseDatabase.getInstance().getReference("tradeDetect");
