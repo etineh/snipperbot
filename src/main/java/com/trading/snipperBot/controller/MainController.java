@@ -26,15 +26,15 @@ public class MainController {
     }
 
     @GetMapping("/test")
-    private String test(){
-        return "it is working..";
+    private TestM test(){
+        return new TestM("test successful", System.currentTimeMillis());
     }
 
     @GetMapping("/live")
     public TestM live() {
         binanceService.liveMarketData();
 
-        return new TestM("success", System.currentTimeMillis());
+        return new TestM("Live data has started", System.currentTimeMillis());
 
     }
 
