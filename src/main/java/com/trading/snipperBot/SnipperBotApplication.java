@@ -16,6 +16,9 @@ public class SnipperBotApplication {
 
 		SpringApplication.run(SnipperBotApplication.class, args);
 
+		String databaseUrl = System.getenv("FIREBASE_DATABASE_URL");
+
+		System.out.println("I have printed db url: " + databaseUrl);
 //		try {
 //			BinanceUtils.checkOnePairBalance("btc");
 //
