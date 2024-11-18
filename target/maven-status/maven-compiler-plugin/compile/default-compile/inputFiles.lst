@@ -2,7 +2,6 @@
 /Users/mac/Downloads/bot/snipperBot/src/main/java/com/trading/snipperBot/constant/K.java
 /Users/mac/Downloads/bot/snipperBot/src/main/java/com/trading/snipperBot/controller/MainController.java
 /Users/mac/Downloads/bot/snipperBot/src/main/java/com/trading/snipperBot/dao/BinanceDoa.java
-/Users/mac/Downloads/bot/snipperBot/src/main/java/com/trading/snipperBot/dao/BinanceMain.java
 /Users/mac/Downloads/bot/snipperBot/src/main/java/com/trading/snipperBot/dao/impl/BinanceDaoImpl.java
 /Users/mac/Downloads/bot/snipperBot/src/main/java/com/trading/snipperBot/model/LiveMarketModel.java
 /Users/mac/Downloads/bot/snipperBot/src/main/java/com/trading/snipperBot/model/OrderResponseModel.java
