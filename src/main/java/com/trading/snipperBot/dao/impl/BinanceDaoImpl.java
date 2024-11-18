@@ -32,11 +32,11 @@ import static com.trading.snipperBot.utils.TradeMapUtils.tradeParamMap;
 @Repository
 public class BinanceDaoImpl implements BinanceDoa {
 
-    @Value("${binance.api.key}")
-    public String apiKey;
-
-    @Value("${binance.secret.key}")
-    public String secretKey;
+//    @Value("${binance.api.key}")
+//    public String apiKey;
+//
+//    @Value("${binance.secret.key}")
+//    public String secretKey;
 
     WebSocketStreamClient wsStreamClient; // defaults to live exchange unless stated.
 
