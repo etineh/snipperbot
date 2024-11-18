@@ -30,7 +30,10 @@ public class FirebaseInitializer {
             String databaseUrl = System.getenv("FIREBASE_DATABASE_URL");
 
             if (firebaseKeyJson == null || firebaseKeyJson.isEmpty()) {
+                System.out.println("firebaseKey is null");
                 throw new IllegalStateException("FIREBASE_KEY_JSON environment variable is not set or empty.");
+            } else {
+                System.out.println("firebaseKey is available");
             }
 
             // Load the credentials from the JSON content

@@ -16,15 +16,15 @@ public class SnipperBotApplication {
 
 		SpringApplication.run(SnipperBotApplication.class, args);
 
-		try {
-			BinanceUtils.checkOnePairBalance("btc");
-
-			BinanceUtils.loadSymbolDecimals();
-			BinanceUtils.saveAllPairLatestBalanceToMap();
-		} catch (Exception e) {
-
-			System.out.println("there is error: " + e.getMessage());
-		}
+//		try {
+//			BinanceUtils.checkOnePairBalance("btc");
+//
+//			BinanceUtils.loadSymbolDecimals();
+//			BinanceUtils.saveAllPairLatestBalanceToMap();
+//		} catch (Exception e) {
+//
+//			System.out.println("there is error: " + e.getMessage());
+//		}
 
 //		BinanceDaoImpl binanceDao = new BinanceDaoImpl();
 //		binanceDao.liveMarketData();
