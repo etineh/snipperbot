@@ -17,7 +17,7 @@ import java.io.IOException;
 public class FirebaseInitializer {
 
 //    @Value("${firebase.key.path}")
-//    private String path;
+//    private String firebaseKeyPath;
 
 //    @Value("${firebase.key.databaseUrl}")
 //    private String databaseUrl;
