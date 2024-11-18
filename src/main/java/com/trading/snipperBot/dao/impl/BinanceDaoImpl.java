@@ -473,12 +473,12 @@ public class BinanceDaoImpl implements BinanceDoa {
                 return true;
             }
 
-//            System.out.println(K.slippageOverProfitMsg);    // send to database and resultM
+            System.out.println(K.slippageOverProfitMsg);    // send to database and resultM
             sendToDatabase(resultM, "onDetect");
             return false;
         }
 
-//        System.out.println(potentialProfit + " No Profit: " + potentialProfit/1000.00 + "%");
+        System.out.println(potentialProfit + " No Profit: " + potentialProfit/1000.00 + "%");
         return false;
     }
 
